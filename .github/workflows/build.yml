@@ -42,3 +42,10 @@ jobs:
       # Step4: Run the build script
       - name: Build project
         run: npm run build
+
+      # Step5: Upload artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifacts@v4
+        with:
+          name: react-dist
+          path: dist
