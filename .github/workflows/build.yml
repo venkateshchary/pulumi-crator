@@ -1,5 +1,10 @@
 name: Build React App
 
+# Applies to all jobs and run steps in this file
+defaults:
+  run:
+    working-directory: ./frontend
+
 # 1. Trigger the workflows on pushes or PRs to the main branch
 on:
   push:
