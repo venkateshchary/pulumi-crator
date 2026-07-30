@@ -1,5 +1,10 @@
 name: Build React App
 
+# Applies to all jobs and run steps in this file
+defaults:
+  run:
+    working-directory: ./frontend
+
 # 1. Trigger the workflows on pushes or PRs to the main branch
 on:
   push:
@@ -25,6 +30,11 @@ jobs:
           cache: 'npm' # speeds up builds by caching node_modules
           cache-dependency-path: frontend/package-lock.json
       
+      # Step3: Show current directory
+      - name: Show current directory
+        run: |
+          pwd
+          ls -la
       # step#: install dependencies
       - name: Install dependencies
         run: npm ci
