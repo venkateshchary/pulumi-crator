@@ -25,6 +25,11 @@ jobs:
           cache: 'npm' # speeds up builds by caching node_modules
           cache-dependency-path: frontend/package-lock.json
       
+      # Step3: Show current directory
+      - name: Show current directory
+        run: |
+          pwd
+          ls -la
       # step#: install dependencies
       - name: Install dependencies
         run: npm ci
