@@ -45,7 +45,7 @@ jobs:
 
       # Step5: Upload artifacts
       - name: Upload build artifacts
-        uses: actions/upload-artifacts@v4
+        uses: actions/artifact@v4
         with:
           name: react-dist
           path: dist
