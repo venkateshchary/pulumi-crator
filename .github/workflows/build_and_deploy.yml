@@ -9,8 +9,8 @@ defaults:
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
 
 
 jobs:
@@ -49,3 +49,19 @@ jobs:
         with:
           name: react-dist
           path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      # step1: Check out your repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # step2: Download the build artifacts
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: react-dist
+          path: dist
+
+  
