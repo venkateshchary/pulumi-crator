@@ -64,4 +64,8 @@ jobs:
           name: react-dist
           path: frontend/dist
 
-  
+      # Step3: To verify the downloaded files from artifact
+      - name: Verify downloaded artifact
+        run: |
+          pwd
+          ls -R frontend/dist
