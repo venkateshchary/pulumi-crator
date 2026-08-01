@@ -1,4 +1,4 @@
-name: Build React App
+name: Build & Deploy React App
 
 # Applies to all jobs and run steps in this file
 defaults:
@@ -68,4 +68,4 @@ jobs:
       - name: Verify downloaded artifact
         run: |
           pwd
-          ls -R frontend/dist
+          ls -R dist
