@@ -3,6 +3,12 @@ name: Pulumi preview
 
 on:
   pull_request:
+
+# Global ENV
+# config passphrase is required
+#This allows Pulumi to encrypt any secret values stored in the stack configuration.
+env:
+    PULUMI_CONFIG_PASSPHRASE: ${{secrets.PULUMI_CONFIG_PASSPHRASE}}
 jobs:
   preview:
     runs-on: ubuntu-latest
