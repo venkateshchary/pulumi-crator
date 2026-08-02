@@ -41,6 +41,15 @@ jobs:
         run: |
           pwd
           ls -R ${{github.workspace}}/infra
+    
+      - name: Verify stack is already exists
+        run: |
+            if uv run pulumi stack select dev >/dev/null 2>&1; then
+                echo "Dev Stack exists"
+            else
+                echo "Stack does not exist"
+                uv run pulumi stack init dev
+            fi
       - name: Select dev stack
         run: uv run pulumi stack select dev
         working-directory: ${{ github.workspace }}/infra
