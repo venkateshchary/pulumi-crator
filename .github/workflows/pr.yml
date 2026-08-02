@@ -21,14 +21,6 @@ jobs:
         run: uv sync
         # working-directory: ${{ github.workspace }} // not needed
 
-      - name: Select dev stack
-        run: uv run pulumi stack select dev
-        working-directory: ${{ github.workspace }}/infra
-
-      - name: Pulumi preview
-        run: uv run pulumi preview
-        working-directory: ${{ github.workspace }}/infra
-
       - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
@@ -41,3 +33,11 @@ jobs:
       - name: Pulumi Save track file
         run: |
             pulumi login s3://pulumi-bootstrap-maintainer
+
+      - name: Select dev stack
+        run: uv run pulumi stack select dev
+        working-directory: ${{ github.workspace }}/infra
+
+      - name: Pulumi preview
+        run: uv run pulumi preview
+        working-directory: ${{ github.workspace }}/infra
