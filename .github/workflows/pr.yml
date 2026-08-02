@@ -37,6 +37,10 @@ jobs:
         run: |
             pulumi login s3://pulumi-bootstrap-state-mainter
 
+      - name: Verify CWD
+        run: |
+          pwd
+          ls -R ${{github.workspace}}/infra
       - name: Select dev stack
         run: uv run pulumi stack select dev
         working-directory: ${{ github.workspace }}/infra
