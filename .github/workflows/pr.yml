@@ -1,0 +1,43 @@
+# .github/workflows/pr.yml
+name: Pulumi preview
+
+on:
+  pull_request:
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup UV
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      
+      - name: Install dependencies
+        run: uv sync
+        # working-directory: ${{ github.workspace }} // not needed
+
+      - name: Select dev stack
+        run: uv run pulumi stack select dev
+        working-directory: ${{ github.workspace }}/infra
+
+      - name: Pulumi preview
+        run: uv run pulumi preview
+        working-directory: ${{ github.workspace }}/infra
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          custom-tags: '{"Environment": "Dev", "Team": "Pulumi"}'
+
+      # Install Pulumi CLI
+      - name: Setup Pulumi CLI
+        uses: pulumi/actions@v4
+    
+      - name: Pulumi Save track file
+        run: |
+            pulumi login s3://pulumi-bootstrap-maintainer
