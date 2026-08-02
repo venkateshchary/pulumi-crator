@@ -50,6 +50,7 @@ jobs:
                 echo "Stack does not exist"
                 uv run pulumi stack init dev
             fi
+        working-directory: ${{ github.workspace }}/infra
       - name: Select dev stack
         run: uv run pulumi stack select dev
         working-directory: ${{ github.workspace }}/infra
