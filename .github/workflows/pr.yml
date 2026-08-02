@@ -35,7 +35,7 @@ jobs:
     
       - name: Pulumi Save track file
         run: |
-            pulumi login s3://pulumi-bootstrap-maintainer
+            pulumi login s3:/pulumi-bootstrap-state-mainter
 
       - name: Select dev stack
         run: uv run pulumi stack select dev
