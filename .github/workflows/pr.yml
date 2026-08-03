@@ -64,3 +64,7 @@ jobs:
       - name: Pulumi preview
         run: uv run pulumi preview
         working-directory: ${{ github.workspace }}/infra
+
+      - name: Pulumi Apply changes
+        run: uv run pulumi up --yes
+        working-directory: ${{github.workspace}}/infra
