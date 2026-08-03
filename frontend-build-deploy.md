@@ -20,3 +20,23 @@ Because the upload action searched here:
 > /home/runner/work/pulumi-crator/pulumi-crator/dist
 
 It never searched inside frontend, because working-directory does not affect uses: actions.
+
+```scss
+Developer pushes code
+        │
+        ▼
+GitHub Actions
+        │
+        ├──────────────┐
+        │              │
+        ▼              ▼
+Build React      Pulumi up
+(frontend/dist)  (Infrastructure)
+        │              │
+        └──────┬───────┘
+               ▼
+Upload dist/ to Website S3 Bucket
+               │
+               ▼
+(Optional) CloudFront Invalidation
+```
