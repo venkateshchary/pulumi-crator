@@ -76,3 +76,27 @@ jobs:
       
       - name: Install UV
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      - name: AWS Authenticate
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          custom-tags: '{"Environment": "Dev", "Team": "Pulumi"}'
+
+      - name: Pulumi Save track file
+        run: |
+            pulumi login s3://pulumi-bootstrap-state-mainter
+
+      - name: Get Bucket name
+        id: bucket_name
+        run: |
+            # Fetch specific bucket_name value
+            uv run pulumi stack select dev
+            bucket_name=$(uv run pulumi stack output bucket_name --json)
+
+            echo "bucket name=$bucket_name" >> $GITHUB_OUTPUT
+        env:
+          PULUMI_CONFIG_PASSPHRASE: ${{secrets.PULUMI_CONFIG_PASSPHRASE}}
+        working-directory: ${{github.workspace }}/infra
