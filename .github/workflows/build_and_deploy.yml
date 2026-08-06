@@ -85,6 +85,25 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           custom-tags: '{"Environment": "Dev", "Team": "Pulumi"}'
 
+      - name: Debug Pulumi
+        working-directory: ${{ github.workspace }}/infra
+        env:
+          PULUMI_CONFIG_PASSPHRASE: ${{ secrets.PULUMI_CONFIG_PASSPHRASE }}
+        run: |
+          pulumi login s3://pulumi-bootstrap-state-mainter
+
+          echo "Current backend:"
+          pulumi whoami
+
+          echo "Stacks:"
+          uv run pulumi stack ls
+
+          echo "Current stack:"
+          uv run pulumi stack select dev
+
+          echo "Outputs:"
+          uv run pulumi stack output
+
       - name: Pulumi Save track file
         run: |
             pulumi login s3://pulumi-bootstrap-state-mainter
