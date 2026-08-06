@@ -122,9 +122,9 @@ jobs:
 
       - name: Verify Bucket export value
         run: |
-          echo "Bucket from previous step: ${{ steps.bucket_name.output.bucket_name }}"
+          echo "Bucket from previous step: ${{ steps.bucket_name.outputs.bucket_name }}"
 
        # Step 3: Copy or sync your local files to the S3 Bucket
       - name: Copy files to S3
         run: |
-          aws s3 sync ./dist s3://${{ steps.bucket_name.output.bucket_name }}/dist --delete
+          aws s3 sync ./dist s3://${{ steps.bucket_name.outputs.bucket_name }}/dist --delete
