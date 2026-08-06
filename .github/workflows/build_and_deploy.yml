@@ -113,9 +113,9 @@ jobs:
         run: |
             # Fetch specific bucket_name value
             uv run pulumi stack select dev
-            bucket_name=$(uv run pulumi stack output bucket_name --json)
+            bucket_name=$(uv run pulumi stack output bucket_name)
 
-            echo "bucket name=$bucket_name" >> $GITHUB_OUTPUT
+            echo "bucket_name=$bucket_name" >> $GITHUB_OUTPUT
         env:
           PULUMI_CONFIG_PASSPHRASE: ${{secrets.PULUMI_CONFIG_PASSPHRASE}}
         working-directory: ${{github.workspace }}/infra
