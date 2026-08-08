@@ -1,3 +1,5 @@
+[![.github/workflows/deploy.yml](https://github.com/venkateshchary/pulumi-crator/actions/workflows/deploy.yml/badge.svg)](https://github.com/venkateshchary/pulumi-crator/actions/workflows/deploy.yml)
+ 
  # AWS Python S3 Bucket Pulumi Template
 
  A minimal Pulumi template for provisioning a single AWS S3 bucket using Python.
