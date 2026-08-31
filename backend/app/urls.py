@@ -1,15 +1,17 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from app import views
-from app.profile_view import ProfileView
+from app.views import AuthorViewSet
+from app.views import ProfileView, DashboardView
+
 
 router = routers.DefaultRouter()
-router.register(r"author", views.AuthorViewSet, basename="author")
+router.register(r"author", AuthorViewSet, basename="author")
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path("", include(router.urls)),
     path("profile", ProfileView.as_view()),
+    path("dashboard", DashboardView.as_view() ),
 ]

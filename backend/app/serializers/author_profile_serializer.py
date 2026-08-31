@@ -1,15 +1,10 @@
 from rest_framework import serializers
-from app.models import Author
 from .profile_serializer import ProfileSerializer
-
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = ["id", "name"]
+from app.models import Author
 
 
 class AuthorProfileSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer()
     class Meta:
         model = Author
-        fields = ["id", "name", "profile"] 
+        fields = ["id", "name", "profile"]

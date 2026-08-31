@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .profile_serializer import ProfileSerializer
-from .models import Profile
+from app.serializers import ProfileSerializer
+from app.models import Profile
 
 
 class ProfileView(APIView):
