@@ -9,3 +9,4 @@ class Product(TimeStampedModel):
     """
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="products")
     stock = models.PositiveIntegerField(default=0)
+    price = models.PositiveIntegerField(default=0)

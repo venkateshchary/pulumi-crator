@@ -5,3 +5,4 @@ from .timestamp import TimeStampedModel
 from .profile import Profile
 from .genre import Genre
 from .products import Product
+from .order import OrderItem, Order
