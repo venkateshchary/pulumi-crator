@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class OrderItemPostSerializer(serializers.ModelSerializer):
-    product_id = serializers.IntergerField()
+    product_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
 
     class Meta:
@@ -14,7 +14,7 @@ class OrderItemPostSerializer(serializers.ModelSerializer):
         fields = ["product_id", "quantity"]
 
 
-class OrderCreateSerializer(serializers.ModelSerialzier):
+class OrderCreateSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(write_only=True)
     products = OrderItemPostSerializer(many=True, write_only=True)
 
@@ -30,16 +30,15 @@ class OrderCreateSerializer(serializers.ModelSerialzier):
         return value
 
     def create(self, validated_data):
+        print("order create is called...")
         products_data = validated_data.pop("products")
         user_id = validated_data.pop("user_id")
 
         user = User.objects.get(id=user_id)
-        print("validated_data: ", validated_data)
+        print("validated_data in create: ", validated_data)
 
         # basic order create here
         order = Order.objects.create(user=user, **validated_data)
-
-        order_items = []
 
         for item in products_data:
             try:
@@ -49,13 +48,21 @@ class OrderCreateSerializer(serializers.ModelSerialzier):
                     {"product_id": f"Product with ID {item['product_id']} does not exist"}
                 )
 
-            order_items.append(
-                OrderItem(
-                    order=order,
-                    product=product,
-                    quantity=item["quantity"],
-                    price_at_purchase = product.price
-                )
-            )
-        OrderItem.objects.bulk_create(order_items)
+            # if product stock is less than 0 then
+            if product.stock >0:
+                    print("stock is available...")
+                    print("placing the order...")
+                    order_obj = OrderItem(
+                        order=order,
+                        product=product,
+                        quantity=item["quantity"],
+                        price_at_purchase = product.price
+                    )
+                    order_obj.save()
+                    product.stock = product.stock-item["quantity"]
+                    print("Removing the placed item from stock count...")
+                    product.save()
+            else:
+                print("no stock is available")
+        # OrderItem.objects.bulk_create(order_items)
         return order

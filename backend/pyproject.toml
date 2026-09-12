@@ -9,6 +9,7 @@ dependencies = [
     "django-debug-toolbar>=7.1.1",
     "django-environ>=0.14.0",
     "djangorestframework>=3.18.0",
+    "faker>=40.38.0",
     "gunicorn>=26.1.0",
     "psycopg[binary]>=3.3.4",
 ]
