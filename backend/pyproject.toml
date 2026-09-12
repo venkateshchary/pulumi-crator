@@ -11,5 +11,6 @@ dependencies = [
     "djangorestframework>=3.18.0",
     "faker>=40.38.0",
     "gunicorn>=26.1.0",
+    "locust>=2.46.5",
     "psycopg[binary]>=3.3.4",
 ]

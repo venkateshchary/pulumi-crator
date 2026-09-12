@@ -2,7 +2,7 @@ from django.urls import include, path
 from rest_framework import routers
 
 from app.views import AuthorViewSet
-from app.views import ProfileView, DashboardView, OrderView
+from app.views import ProfileView, DashboardView, OrderView, health_check
 
 
 router = routers.DefaultRouter()
@@ -15,4 +15,5 @@ urlpatterns = [
     path("profile", ProfileView.as_view()),
     path("dashboard", DashboardView.as_view() ),
     path("order", OrderView.as_view()),
+     path("health", health_check, name="health_check"),
 ]
