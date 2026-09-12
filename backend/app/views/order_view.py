@@ -1,0 +1,22 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response, JsonResponse
+from rest_framework import status
+from app.models import Product, Order
+from app.serializers import OrderCreateSerializer
+from django.db import transaction
+
+
+class OrderView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        queryset = Order.objects.all()
+        serializer = OrderCreateSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = OrderCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            with transaction.atomic():
+                serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
