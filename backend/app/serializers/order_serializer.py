@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from app.models import OrderItem, Order, Product, OrderItem
 from django.contrib.auth import get_user_model
+from rest_framework import status
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -41,6 +43,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         order = Order.objects.create(user=user, **validated_data)
 
         for item in products_data:
+            print("each item:", item)
             try:
                 product = Product.objects.get(id=item["product_id"])
             except Product.DoesNotExist:
@@ -48,8 +51,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
                     {"product_id": f"Product with ID {item['product_id']} does not exist"}
                 )
 
-            # if product stock is less than 0 then
-            if product.stock >0:
+            # if product stock should be +ve and available for requested quantity
+            if product.stock >0 and item["quantity"]<= product.stock:
                     print("stock is available...")
                     print("placing the order...")
                     order_obj = OrderItem(
@@ -64,5 +67,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
                     product.save()
             else:
                 print("no stock is available")
+                return Response({"status": "Out of Stock"}, status=status.HTTP_404_NOT_FOUND)
         # OrderItem.objects.bulk_create(order_items)
         return order
