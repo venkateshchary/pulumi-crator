@@ -3,6 +3,10 @@ from app.models import OrderItem, Order, Product, OrderItem
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.response import Response
+import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -32,20 +36,22 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        print("order create is called...")
+        logger.info("order create is called...")
         products_data = validated_data.pop("products")
         user_id = validated_data.pop("user_id")
 
         user = User.objects.get(id=user_id)
-        print("validated_data in create: ", validated_data)
 
         # basic order create here
         order = Order.objects.create(user=user, **validated_data)
 
         for item in products_data:
-            print("each item:", item)
+            logger.info(f"each item: {item}")
             try:
-                product = Product.objects.get(id=item["product_id"])
+                product = Product.objects.select_for_update().get(id=item["product_id"])
+                # logger.info("going to sleep")
+                # running 100 req per without time sleep
+                # each lock would hold upt to ~2ms X100 = 200 ms thinking would complete
             except Product.DoesNotExist:
                 raise serializers.ValidationError(
                     {"product_id": f"Product with ID {item['product_id']} does not exist"}
@@ -53,20 +59,21 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
             # if product stock should be +ve and available for requested quantity
             if product.stock >0 and item["quantity"]<= product.stock:
-                    print("stock is available...")
-                    print("placing the order...")
-                    order_obj = OrderItem(
+                logger.info("stock is available...")
+                order_obj = OrderItem(
                         order=order,
                         product=product,
                         quantity=item["quantity"],
                         price_at_purchase = product.price
-                    )
-                    order_obj.save()
-                    product.stock = product.stock-item["quantity"]
-                    print("Removing the placed item from stock count...")
-                    product.save()
+                )
+                order_obj.save()
+                logger.info("order is saved...")
+                product.stock = product.stock-item["quantity"]
+                logger.info("Removing the placed item from stock count...")
+                product.save()
             else:
-                print("no stock is available")
-                return Response({"status": "Out of Stock"}, status=status.HTTP_404_NOT_FOUND)
-        # OrderItem.objects.bulk_create(order_items)
+                logger.warning("no stock is available")
+                raise serializers.ValidationError(
+                    {"quantity": f"Product '{product}' is out of stock or insufficient quantity available."}
+                )
         return order
