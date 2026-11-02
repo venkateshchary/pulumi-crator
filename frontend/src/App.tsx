@@ -1,13 +1,43 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from './assets/vite.svg'
-// import heroImg from './assets/hero.png'
 import './App.css'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+function Home() {
+  return <h1>Home Page</h1>;
+}
+
+function About() {
+  return <h1>About Page</h1>;
+}
+
+function Contact() {
+  return <h1>Contact Page</h1>;
+}
+
+function Blogs() {
+  return <h1>Blogs Page</h1>;
+}
+
 
 function App() {
 
   return (
-    <>
+    <BrowserRouter>
+      { /* Navigation */}
+      <nav className='space-x-6 border-t-amber-300 shadow-2xl p-2 text-center'>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/blog">Blogs</Link>
+        <Link to="/contact">Contact</Link>
+      </nav>
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog" element={<Blogs />} />
+        <Route path="/blog/:slug" element={<Blogs />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
       <section className='bg-slate-900 text-white max-w-4xl text-center space-y-2 border-cyan-900 shadow-2xl mx-auto p-2'>
         <h1 className='font-bold text-3xl'> Lets learn Tailwind!</h1>
         <p className="loren">
@@ -15,7 +45,7 @@ function App() {
         </p>
         <button className='border-amber-300 text-red-400 p-1'>submit</button>
       </section>
-    </>
+    </BrowserRouter>
   )
 }
 
