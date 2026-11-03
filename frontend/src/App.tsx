@@ -1,5 +1,6 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import BlogList from './components/BlogList';
 
 function Home() {
   return <h1>Home Page</h1>;
@@ -33,7 +34,7 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blogs />} />
+        <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:slug" element={<Blogs />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
