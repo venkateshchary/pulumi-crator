@@ -8,12 +8,18 @@ export default function BlogList() {
   });
   return (
     <div>
-      <h1>Blog list </h1>
-      <ul>
+      <h1><strong>Blog list</strong> </h1>
+      <ul className="flex flex-col gap-2">
         {Object.entries(blogs).map(([fullFileName,]) => {
           const fileName = fullFileName.split('/').at(-1)?.split('.').at(0);
           // 2. Explicitly return your JSX element
-          return (<li key={fileName}>{fileName}</li>);
+          return (<div>
+            <li key={fileName}>{fileName}</li>
+            <p>
+              <a href="" className="text-blue-600 underline">For more details</a>
+            </p>
+
+          </div>);
         })}
       </ul>
     </div>
