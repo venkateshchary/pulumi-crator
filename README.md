@@ -1,6 +1,6 @@
 [![.github/workflows/deploy.yml](https://github.com/venkateshchary/pulumi-crator/actions/workflows/deploy.yml/badge.svg)](https://github.com/venkateshchary/pulumi-crator/actions/workflows/deploy.yml)
  
-
+Site Available on: https://hungrybug.in
 
  ## Frontend
 [frontend readme.md](frontend/README.md)
