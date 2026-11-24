@@ -19,7 +19,7 @@ jobs:
       # step1: Check out your repository code
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       # step2: Setup node.js environment
       - name: Setup node.js
         uses: actions/setup-node@v4
@@ -27,7 +27,7 @@ jobs:
           node-version: '24'
           cache: 'npm' # speeds up builds by caching node_modules
           cache-dependency-path: frontend/package-lock.json
-      
+
       # Step3: Show current directory
       - name: Show current directory
         run: |
@@ -67,16 +67,20 @@ jobs:
         run: |
           pwd
           ls -R dist
-  
+
       #Step4: Pulumi Setup
       - name: Pulumi Setup download python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       # step5: install uv
       - name: Install UV
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
+      # step5b: install Pulumi CLI
+      - name: Install Pulumi CLI
+        uses: pulumi/setup-pulumi@v2
 
       # Step6: aws authenticate
       - name: AWS Authenticate
