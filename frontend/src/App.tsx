@@ -13,15 +13,21 @@ import {
 import PostCard from "./components/PostCard";
 import { posts } from "./data/post";
 import BugReportIcon from "@mui/icons-material/BugReport";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 function App() {
   const [query, setQuery] = useState("");
-  const handleChange = (e) => {
+
+
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
     console.log("e:", e.target.value);
     setQuery(e.target.value);
   };
 
+  const visiblePosts = posts.filter(post =>
+    post.title.toLowerCase().includes(query.toLowerCase())
+  );
+  console.log("visible Posts: ", visiblePosts.length);
   return (
     <Box>
       <AppBar position="static">
@@ -38,20 +44,24 @@ function App() {
         </Toolbar>
       </AppBar>
       <Container maxWidth="sm" sx={{ mt: 3, boxShadow: 3, p: 4, border: 2 }}>
-        <Box sx={{ display: "flex" }}>
+        <Box>
           <TextField
             fullWidth
             label="search"
             variant="filled"
+            value={query}
             placeholder="Article name"
             onChange={handleChange}
-            helperText="search for article name"
+            sx={{mb:2}}
           />
         </Box>
         <Stack spacing={2}>
-          {posts.map((post) => (
+          {visiblePosts.length>0 ?(visiblePosts.map((post) => (
             <PostCard key={post.id} {...post} />
-          ))}
+          ))) : (
+              <Typography variant="body1" color="textSecondary">No posts found</Typography>
+          )}
+
         </Stack>
       </Container>
     </Box>
